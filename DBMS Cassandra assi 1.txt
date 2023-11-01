@@ -1,0 +1,147 @@
+ 
+Cassandra assignmnet 1:
+1. create a table product to store pid, pname, qty, price,features
+create table product(
+pid int primary key,
+pname text,
+qty int,
+price double,
+features text
+);
+
+
+2. add 5 records into the table
+
+insert into product(pid,pname,qty,price,features) values (1,'mobile',10,10000,'smartphone');
+insert into product(pid,pname,qty,price,features) values (2,'Cupboard',20,5000,'Huge');
+insert into product(pid,pname,qty,price,features) values (3,'Bucket',50,200,'Heavy');
+insert into product(pid,pname,qty,price,features) values (4,'Pen',40,10,'Smooth');
+insert into product(pid,pname,qty,price,features) values (5,'Shoe',30,1200,'Durable');
+
+
+ pid | features   | pname    | price | qty
+-----+------------+----------+-------+-----
+   5 |    Durable |     Shoe |  1200 |  30
+   1 | smartphone |   mobile | 10000 |  10
+   2 |       Huge | Cupboard |  5000 |  20
+   4 |     Smooth |      Pen |    10 |  40
+   3 |      Heavy |   Bucket |   200 |  50
+
+
+3. create a table books  to store bid, bname, authors, price
+create table books(
+bid int primary key,
+bname text,
+authors text,
+price double,
+);
+
+
+2. add 5 records into the table
+insert into books(bid,bname,authors,price) values (101, 'Mockingbird', 'Harper_Lee', 12.99);
+insert into books(bid,bname,authors,price) values (102, 'Gatsby', 'F_Scott_Fitzgerald', 10.50);
+insert into books(bid,bname,authors,price) values (103, '1984', 'George_Orwell', 8.75);
+insert into books(bid,bname,authors,price) values (104, 'Prejudice', 'Jane_Austen', 9.99);
+insert into books(bid,bname,authors,price) values (105, 'Arrow', 'J_D_Salinger', 11.25);
+
+
+
+
+Example
+1. create customer type cno,cname,mobile
+create type customer(
+cno int,
+cname text,
+mobile text,
+);
+
+
+1. create table account(acno int ,type varchar,balance counter,cinfo customer,chequebknum list<int>)
+create table account (
+  acno int,
+  type varchar,
+  balance counter,
+  cinfo frozen<customer>,
+  chequebknum frozen<list<int>>,
+  primary key (acno,type,cinfo,chequebknum)
+);
+
+
+
+
+2. insert 5 records into account 5 records
+
+update account set balance=balance+10000 where acno=11 and type ='savings' and cinfo={cno:1,cname: 'Gouraw', mobile:'555-1234'} and chequebknum=[1001,1005];
+update account set balance=balance+30000 where acno=12 and type ='current' and cinfo={cno:2,cname: 'Bhavesh',mobile: '555-5678'} and chequebknum=[1004, 1005];
+update account set balance=balance+50000 where acno=13 and type ='joint' and cinfo={cno:3,cname: 'Omkar',mobile: '555-9012'} and chequebknum=[1006];
+update account set balance=balance+90000 where acno=14 and type ='current' and cinfo={cno:4,cname: 'Sammed',mobile: '555-3456'} and chequebknum=[1009,1001];
+update account set balance=balance+70000 where acno=15 and type ='savings' and cinfo={cno:5,cname:'Hritik', mobile: '555-7890'} and chequebknum=[1007,1008];
+
+
+
+3. transfer funds 50000 from ac/no 111 to a/c no 333 and a then transfer 10000 Rs amt from 333 to 4444
+update account set balance=balance-5000 where acno=11 and type ='savings' and cinfo={cno:1,cname: 'Gouraw', mobile:'555-1234'} and chequebknum=[1001,1005];
+update account set balance=balance+5000 where acno=13 and type ='joint' and cinfo={cno:3,cname: 'Omkar',mobile: '555-9012'} and chequebknum=[1006];
+
+ acno | type    | cinfo                                          | chequebknum  | balance
+------+---------+------------------------------------------------+--------------+---------
+   13 |   joint |   {cno: 3, cname: 'Omkar', mobile: '555-9012'} |       [1006] |   55000
+   11 | savings |  {cno: 1, cname: 'Gouraw', mobile: '555-1234'} | [1001, 1005] |    5000
+   15 | savings |  {cno: 5, cname: 'Hritik', mobile: '555-7890'} | [1007, 1008] |   70000
+   14 | current |  {cno: 4, cname: 'Sammed', mobile: '555-3456'} | [1009, 1001] |   90000
+   12 | current | {cno: 2, cname: 'Bhavesh', mobile: '555-5678'} | [1004, 1005] |   30000
+
+update account set balance=balance-1000 where acno=13 and type ='joint' and cinfo={cno:3,cname: 'Omkar',mobile: '555-9012'} and chequebknum=[1006];
+update account set balance=balance+1000 where acno=14 and type ='current' and cinfo={cno:4,cname: 'Sammed',mobile: '555-3456'} and chequebknum=[1009,1001];
+
+ acno | type    | cinfo                                          | chequebknum  | balance
+------+---------+------------------------------------------------+--------------+---------
+   13 |   joint |   {cno: 3, cname: 'Omkar', mobile: '555-9012'} |       [1006] |   54000
+   11 | savings |  {cno: 1, cname: 'Gouraw', mobile: '555-1234'} | [1001, 1005] |    5000
+   15 | savings |  {cno: 5, cname: 'Hritik', mobile: '555-7890'} | [1007, 1008] |   70000
+   14 | current |  {cno: 4, cname: 'Sammed', mobile: '555-3456'} | [1009, 1001] |   91000
+   12 | current | {cno: 2, cname: 'Bhavesh', mobile: '555-5678'} | [1004, 1005] |   30000
+
+4. add new column in account table interest
+alter table account add interest counter;
+
+ acno | type    | cinfo                                          | chequebknum  | balance | interest
+------+---------+------------------------------------------------+--------------+---------+----------
+   13 |   joint |   {cno: 3, cname: 'Omkar', mobile: '555-9012'} |       [1006] |   54000 |     null
+   11 | savings |  {cno: 1, cname: 'Gouraw', mobile: '555-1234'} | [1001, 1005] |    5000 |     null
+   15 | savings |  {cno: 5, cname: 'Hritik', mobile: '555-7890'} | [1007, 1008] |   70000 |     null
+   14 | current |  {cno: 4, cname: 'Sammed', mobile: '555-3456'} | [1009, 1001] |   91000 |     null
+   12 | current | {cno: 2, cname: 'Bhavesh', mobile: '555-5678'} | [1004, 1005] |   30000 |     null
+
+5. update all the values of interest to 4
+
+update account set interest=interest+4 where acno=11 and type ='savings' and cinfo={cno:1,cname: 'Gouraw', mobile:'555-1234'} and chequebknum=[1001,1005];
+update account set interest=interest+4 where acno=12 and type ='current' and cinfo={cno:2,cname: 'Bhavesh',mobile: '555-5678'} and chequebknum=[1004, 1005];
+update account set interest=interest+4 where acno=13 and type ='joint' and cinfo={cno:3,cname: 'Omkar',mobile: '555-9012'} and chequebknum=[1006];
+update account set interest=interest+4 where acno=14 and type ='current' and cinfo={cno:4,cname: 'Sammed',mobile: '555-3456'} and chequebknum=[1009,1001];
+update account set interest=interest+4 where acno=15 and type ='savings' and cinfo={cno:5,cname:'Hritik', mobile: '555-7890'} and chequebknum=[1007,1008];
+
+ acno | type    | cinfo                                          | chequebknum  | balance | interest
+------+---------+------------------------------------------------+--------------+---------+----------
+   13 |   joint |   {cno: 3, cname: 'Omkar', mobile: '555-9012'} |       [1006] |   54000 |        4
+   11 | savings |  {cno: 1, cname: 'Gouraw', mobile: '555-1234'} | [1001, 1005] |    5000 |        4
+   15 | savings |  {cno: 5, cname: 'Hritik', mobile: '555-7890'} | [1007, 1008] |   70000 |        4
+   14 | current |  {cno: 4, cname: 'Sammed', mobile: '555-3456'} | [1009, 1001] |   91000 |        4
+   12 | current | {cno: 2, cname: 'Bhavesh', mobile: '555-5678'} | [1004, 1005] |   30000 |        4
+
+6. display all the data on the screeen
+
+select * from account;
+
+ acno | type    | cinfo                                          | chequebknum  | balance | interest
+------+---------+------------------------------------------------+--------------+---------+----------
+   13 |   joint |   {cno: 3, cname: 'Omkar', mobile: '555-9012'} |       [1006] |   54000 |        4
+   11 | savings |  {cno: 1, cname: 'Gouraw', mobile: '555-1234'} | [1001, 1005] |    5000 |        4
+   15 | savings |  {cno: 5, cname: 'Hritik', mobile: '555-7890'} | [1007, 1008] |   70000 |        4
+   14 | current |  {cno: 4, cname: 'Sammed', mobile: '555-3456'} | [1009, 1001] |   91000 |        4
+   12 | current | {cno: 2, cname: 'Bhavesh', mobile: '555-5678'} | [1004, 1005] |   30000 |        4
+
+7. add new cheque book number in the list of acno 111
+
+update account set chequebknum=chequebknum+[1212] where acno=11 and type ='savings' and cinfo={cno:1,cname: 'Gouraw', mobile:'555-1234'} and chequebknum=[1001,1005];
+

@@ -1,0 +1,180 @@
+1. create a customer table to store following columns, customer id as primary key
+customer id, name, mobile set<int>,email tuple(text,text),purchaseveh map<text,int>,hoobies list<text>
+create table customer(
+cid int primary key,
+cname text,
+mobile set<int>,
+email tuple<text, text>,
+purchaseveh map<text, int>,
+hoobies list<text>
+);
+
+
+2. insert 5 records with customer id 11,12,13,14,15
+insert into customer (cid,cname,mobile,email,purchaseveh,hoobies) values (11,'omkar',{55248,4547},('omk@gmail','om@yahoo'),{'BMW':1},['reading']);
+insert into customer (cid,cname,mobile,email,purchaseveh,hoobies) values (12,'Sammed',{55248,4547},('sam@gmail','sam@yahoo'),{'Merc':1},['Writting']);
+insert into customer (cid,cname,mobile,email,purchaseveh,hoobies) values (13,'Gouraw',{55248,4547},('Gor@gmail','Gor@yahoo'),{'Porche':1},['Travel']);
+insert into customer (cid,cname,mobile,email,purchaseveh,hoobies) values (14,'Bhavesh',{55248,4547},('Bhavesh@gmail','Bhavesh@yahoo'),{'Tesla':1},['Chat']);
+insert into customer (cid,cname,mobile,email,purchaseveh,hoobies) values (15,'Hritik',{55248,4547},('Hritik@gmail','Hritik@yahoo'),{'Jeep':1},['Vlogging']);
+
+ cid | cname   | email                              | hoobies      | mobile        | purchaseveh
+-----+---------+------------------------------------+--------------+---------------+---------------
+  13 |  Gouraw |         ('Gor@gmail', 'Gor@yahoo') |   ['Travel'] | {4547, 55248} | {'Porche': 1}
+  11 |   omkar |          ('omk@gmail', 'om@yahoo') |  ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') | ['Vlogging'] | {4547, 55248} |   {'Jeep': 1}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') |     ['Chat'] | {4547, 55248} |  {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') | ['Writting'] | {4547, 55248} |   {'Merc': 1}
+
+
+3. add hoobies design, drawing for custid=12
+update customer set hoobies=['design','drawing'] where cid=12;
+
+ cid | cname   | email                              | hoobies               | mobile        | purchaseveh
+-----+---------+------------------------------------+-----------------------+---------------+---------------
+  13 |  Gouraw |         ('Gor@gmail', 'Gor@yahoo') |            ['Travel'] | {4547, 55248} | {'Porche': 1}
+  11 |   omkar |          ('omk@gmail', 'om@yahoo') |           ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') |          ['Vlogging'] | {4547, 55248} |   {'Jeep': 1}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') |              ['Chat'] | {4547, 55248} |  {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') | ['design', 'drawing'] | {4547, 55248} |   {'Merc': 1}
+
+
+
+4. remove hoobies design for custid=12
+delete hoobies[0] from customer where cid=12;
+
+ cid | cname   | email                              | hoobies      | mobile        | purchaseveh
+-----+---------+------------------------------------+--------------+---------------+---------------
+  13 |  Gouraw |         ('Gor@gmail', 'Gor@yahoo') |   ['Travel'] | {4547, 55248} | {'Porche': 1}
+  11 |   omkar |          ('omk@gmail', 'om@yahoo') |  ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') | ['Vlogging'] | {4547, 55248} |   {'Jeep': 1}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') |     ['Chat'] | {4547, 55248} |  {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') |  ['drawing'] | {4547, 55248} |   {'Merc': 1}
+
+
+5. update name of customer with id 11
+
+update customer set cname='Sammer' where cid=11;
+
+ cid | cname   | email                              | hoobies      | mobile        | purchaseveh
+-----+---------+------------------------------------+--------------+---------------+---------------
+  13 |  Gouraw |         ('Gor@gmail', 'Gor@yahoo') |   ['Travel'] | {4547, 55248} | {'Porche': 1}
+  11 |  Sammer |          ('omk@gmail', 'om@yahoo') |  ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') | ['Vlogging'] | {4547, 55248} |   {'Jeep': 1}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') |     ['Chat'] | {4547, 55248} |  {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') |  ['drawing'] | {4547, 55248} |   {'Merc': 1}
+
+
+6. modify emails of customer 13
+
+update customer set email=('abc@gmail','xyz@yahoo') where cid=13;
+
+ cid | cname   | email                              | hoobies      | mobile        | purchaseveh
+-----+---------+------------------------------------+--------------+---------------+---------------
+  13 |  Gouraw |         ('abc@gmail', 'xyz@yahoo') |   ['Travel'] | {4547, 55248} | {'Porche': 1}
+  11 |  Sammer |          ('omk@gmail', 'om@yahoo') |  ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') | ['Vlogging'] | {4547, 55248} |   {'Jeep': 1}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') |     ['Chat'] | {4547, 55248} |  {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') |  ['drawing'] | {4547, 55248} |   {'Merc': 1}
+
+7. add and delete one of the purchase vehicle
+
+update customer set purchaseveh=purchaseveh+{'hundai':2} where cid=15;
+
+ cid | cname   | email                              | hoobies      | mobile        | purchaseveh
+-----+---------+------------------------------------+--------------+---------------+--------------------------
+  13 |  Gouraw |         ('abc@gmail', 'xyz@yahoo') |   ['Travel'] | {4547, 55248} |            {'Porche': 1}
+  11 |  Sammer |          ('omk@gmail', 'om@yahoo') |  ['reading'] | {4547, 55248} |               {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') | ['Vlogging'] | {4547, 55248} | {'Jeep': 1, 'hundai': 2}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') |     ['Chat'] | {4547, 55248} |             {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') |  ['drawing'] | {4547, 55248} |              {'Merc': 1}
+  
+  delete purchaseveh['Jeep'] from customer where cid=15;
+  
+  
+ cid | cname   | email                              | hoobies      | mobile        | purchaseveh
+-----+---------+------------------------------------+--------------+---------------+---------------
+  13 |  Gouraw |         ('abc@gmail', 'xyz@yahoo') |   ['Travel'] | {4547, 55248} | {'Porche': 1}
+  11 |  Sammer |          ('omk@gmail', 'om@yahoo') |  ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') | ['Vlogging'] | {4547, 55248} | {'hundai': 2}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') |     ['Chat'] | {4547, 55248} |  {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') |  ['drawing'] | {4547, 55248} |   {'Merc': 1}
+
+8. add and delete one of the hobbies for customer 14
+update customer set hoobies=hoobies+['swimming'] where cid=14;
+
+
+ cid | cname   | email                              | hoobies              | mobile        | purchaseveh
+-----+---------+------------------------------------+----------------------+---------------+---------------
+  13 |  Gouraw |         ('abc@gmail', 'xyz@yahoo') |           ['Travel'] | {4547, 55248} | {'Porche': 1}
+  11 |  Sammer |          ('omk@gmail', 'om@yahoo') |          ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') |         ['Vlogging'] | {4547, 55248} | {'hundai': 2}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') | ['chat', 'swimming'] | {4547, 55248} |  {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') |          ['drawing'] | {4547, 55248} |   {'Merc': 1}
+
+delete hoobies[0] from customer where cid=14;
+
+ cid | cname   | email                              | hoobies      | mobile        | purchaseveh
+-----+---------+------------------------------------+--------------+---------------+---------------
+  13 |  Gouraw |         ('abc@gmail', 'xyz@yahoo') |   ['Travel'] | {4547, 55248} | {'Porche': 1}
+  11 |  Sammer |          ('omk@gmail', 'om@yahoo') |  ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') | ['Vlogging'] | {4547, 55248} | {'hundai': 2}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') | ['swimming'] | {4547, 55248} |  {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') |  ['drawing'] | {4547, 55248} |   {'Merc': 1}
+  
+  
+
+9.change the quantity of vehicle activa from customer id 15
+update customer set purchaseveh={'Activa':2} where cid=15;
+
+ cid | cname   | email                              | hoobies      | mobile        | purchaseveh
+-----+---------+------------------------------------+--------------+---------------+---------------
+  13 |  Gouraw |         ('abc@gmail', 'xyz@yahoo') |   ['Travel'] | {4547, 55248} | {'Porche': 1}
+  11 |  Sammer |          ('omk@gmail', 'om@yahoo') |  ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') | ['Vlogging'] | {4547, 55248} | {'Activa': 2}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') | ['swimming'] | {4547, 55248} |  {'Tesla': 1}
+  12 |  Sammed |         ('sam@gmail', 'sam@yahoo') |  ['drawing'] | {4547, 55248} |   {'Merc': 1}
+  
+
+Q2create a batch to add 2 records in customer table, delete record for customer 13 
+and delete only email from customer 11
+and update emails for customer 12
+
+Begin batch
+insert into customer (cid,cname,mobile,email,purchaseveh,hoobies) values (16,'Ramesh',{55248,4547},('Ram@gmail','Ram@yahoo'),{'suzuki':1},['walking']);
+insert into customer (cid,cname,mobile,email,purchaseveh,hoobies) values (17,'Suresh',{55248,4547},('Sur@gmail','Sur@yahoo'),{'Hero':1},['Sleeping']);
+delete from customer where cid=13;
+delete email from customer where cid=11;
+update customer set email=('sam@orkut') where cid=12;
+Apply batch;
+
+ cid | cname   | email                              | hoobies      | mobile        | purchaseveh
+-----+---------+------------------------------------+--------------+---------------+---------------
+  16 |  Ramesh |         ('Ram@gmail', 'Ram@yahoo') |  ['walking'] | {4547, 55248} | {'suzuki': 1}
+  11 |  Sammer |                               null |  ['reading'] | {4547, 55248} |    {'BMW': 1}
+  15 |  Hritik |   ('Hritik@gmail', 'Hritik@yahoo') | ['Vlogging'] | {4547, 55248} | {'Activa': 2}
+  14 | Bhavesh | ('Bhavesh@gmail', 'Bhavesh@yahoo') | ['swimming'] | {4547, 55248} |  {'Tesla': 1}
+  17 |  Suresh |         ('Sur@gmail', 'Sur@yahoo') | ['Sleeping'] | {4547, 55248} |   {'Hero': 1}
+  12 |  Sammed |                ('sam@orkut', None) |  ['drawing'] | {4547, 55248} |   {'Merc': 1}
+
+Q3. create type department to store deptno, dname
+a. 
+change the type department to add dloc in it.
+
+create type department(
+deptno int,
+dname varchar
+);
+
+alter type department add dloc varchar;
+
+CREATE TYPE acts0923.department (
+    deptno int,
+    dname text,
+    dloc text
+);
+
+
+create table emp to store eid, ename, sal, projects List<text>, dept department 
+add 5 records in the table
+
+b. create index on ename column

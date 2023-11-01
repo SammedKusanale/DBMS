@@ -1,0 +1,146 @@
+Create a Employee Collection add 5 documents:
+Example:
+{empno:111,ename:"Deepali
+Vaidya",sal:40000.00,dept:{deptno:12,dname:,"Hr",dloc:"Mumbai},
+Desg:"Analyst",mgr:{name:"Satish",num:111},project:[{name:"Project-
+1",Hrs:4},{name:"project- 2",Hrs:4}]}
+
+db.myemployee.insertMany([
+{empno:111,ename:"Deepali Vaidya",sal:40000.00,dept:{deptno:12,dname:"Hr",dloc:"Mumbai"},
+Desg:"Analyst",mgr:{name:"Satish",num:111},project:[{name:"Project-1",Hrs:4},{name:"project-2",Hrs:4}]},
+{empno:112,ename:"Sameer Joshi",sal:7000.00,dept:{deptno:10,dname:"purchase department",dloc:"Pune"},
+Desg:"Clerk",mgr:{name:"Soham",num:201},project:[{name:"Project-1",Hrs:6},{name:"project-2",Hrs:2}]},
+{empno:113,ename:"Keshav Diwan",sal:98000.00,dept:{deptno:12,dname:"Hr",dloc:"Pune"},
+Desg:"GM",mgr:{name:"Rajesh",num:501},project:[{name:"Project-1",Hrs:2},{name:"project-2",Hrs:6}]},
+{empno:114,ename:"Roshan Tambe",sal:55000.00,dept:{deptno:10,dname:"purchase department",dloc:"Mumbai"},
+Desg:"Executive",mgr:{name:"Soham",num:201},project:[{name:"Project-1",Hrs:1},{name:"project-2",Hrs:7}]},
+{empno:115,ename:"Rima Doshi",sal:42000.00,dept:{deptno:13,dname:"Sales",dloc:"Nagpur"},
+Desg:"SalesManager",mgr:{name:"Rajiv",num:311},project:[{name:"Project-3",Hrs:4},{name:"project-4",Hrs:4}]}])
+
+
+1. All Employee’s with the desg as ‘CLERK’ are now called as (AO) Administrative Officers.
+Update the Employee collection for this.
+db.myemployee.updateMany({Desg:'Clerk'},{$set:{Desg:'AO'}})
+
+2. Change the number of hours for project-1 to 5 for all employees with designation analyst.
+db.myemployee.updateMany({Desg:'Analyst','project.name':"Project-1"},{$set:{'project.$.Hrs':5}})
+
+
+3. Add 2 projects project-3 and project-4 for employee whose name starts with "Deep" with 2 hrs
+db.myemployee.updateMany({ename:/^Deep/},{$push:{project:{$each:[{name:"Project-3",Hrs:2},{name:"project-4",Hrs:2}]}}})
+
+
+4. Add bonus rs 2000 for all employees with salary > 50000
+db.myemployee.updateMany({"sal":{$gt:50000}},{$set:{"bonus":2000}});
+
+
+5. Add bonus rs 1500 if salary <50000 and > 30000
+db.myemployee.updateMany({"sal":{$gt:30000,$lt:50000}},{$set:{"bonus":1500}});
+
+6. increment bounus by 1000 for all employees if salary <=30000
+db.myemployee.updateMany({"sal":{$lte:30000}},{$inc:{"bonus":1500}},{upsert:true});
+
+
+7. Change manager name to Tushar for all employees whose manager is currently “satish"
+And manager number to 3333
+db.myemployee.updateMany({'mgr.name':'Satish'},{$set:{'mgr.name':'Tushar','mgr.num':3333}})
+
+8. Increase salary of all employees from “purchase department" by 15000
+
+db.myemployee.updateMany({'dept.dname':"purchase department"},{$inc:{sal:15000}})
+
+
+9. Decrease number of hrs by 2 for all employees who are working on project-2
+db.myemployee.updateMany({'project.name':"project-2"},{$inc:{'project.$.Hrs':-2}})
+
+
+10. Delete project-2 from all employee document if they are working on the project for 4
+hrs.
+
+db.myemployee.updateMany({ "project": { $elemMatch: { "name": "project-2", "Hrs": 4 } } },{ $pull: { "project": { "name": "project-2", "Hrs": 4 }}});
+
+11. Change the salary of employees to 10000 only if their salary is < 10000
+
+db.myemployee.updateMany({sal:{$lt:10000}},{$set:{sal:10000}})
+
+
+12. Increase bonus of all employees by 500 if the bonus is <2000 or their salary is <
+20000 or if employee belong to sales department
+
+db.myemployee.updateMany({ $or:[{ "bonus": { $lt: 2000 } },{ "sal": { $lt: 20000 } },{ "dept.dname": "Sales" }]},{ $inc: { "bonus": 500 } });
+
+13. Add 2 new project at position 2 for all employees with designation analyst or salary is
+equal to either 30000 or 33000 or 35000
+
+
+db.myemployee.updateMany({$or:[{ Desg: "Analyst" },{ "sal":{$in:[30000,33000,35000]}}]},{$push:{project:{$each:[{name:"Project-9",Hrs:2},{name:"project-8",Hrs:6}],$position:1}}})
+
+
+14. Delete last project of all employees with department name is “HR" and if the location
+is Mumbai
+
+db.myemployee.updateMany({'dept.dname':"Hr",'dept.dloc':"Mumbai"},{$pop:{project:1}})
+
+15. Change designation of all employees to senior programmer if they are working on
+name:"Project-1" for 4 hrs
+db.myemployee.updateMany({project:{$elemMatch:{name:"Project-1",Hrs:2}}},{$set:{Desg:"senior programmer"}})
+
+16. Add list of hobbies in all employees document whose manager is Rajan or Revati
+db.myemployee.updateMany({'mgr.name':{$in:['Rajiv','Rajesh']}},{$set:{hobbie:["swimming","sleepng"]}})
+
+17. Add list of skillset in all employee documents who are working on project-4 for 3 hrs
+or on project-3 for 4 hrs
+db.myemployee.updateMany({project:{$elemMatch:{$in[{name:"project-4",Hrs:4},{name:"Project-3",Hrs:4}]}}},{$set:{skillset:["c++","python3"]}})
+db.myemployee.updateMany({"project":{$elemMatch:{$in:[{"name":"project-4","Hrs":4},{"name":"Project-3","Hrs":4}]}}},{$set:{"skillset":["c++","python3"]}});
+
+
+18. Add a new hobby as blogging at 3 position in hobbies array for all employess whose
+name starts with R or p and ends with j or s
+db.myemployee.updateMany({"ename":{$regex:/^[RP].*[JS]$/}},{$push:{"hobbies":{$each:[{"name": "blogging"}],$position: 2}}});
+
+
+19. Increase salary by 10000 for all employees who are working on project-2 or project-3
+or project-1
+Decrease bonus by 1000 rs And increase salary by 1000rs for all employees whose
+department location is Mumbai
+
+db.mystudents.updateMany({},{$inc:{'sal.$[elem]':10000,'bonus.$[elem2]':-1000,'sal.$[elem2]':1000}},{arrayFilters:[{elem:{'project.name': { $in:["project-1", "project-2", "project-3"],[{elem2:{'dept.dloc':'Mumbai' }]}]}},{multi:true})
+
+
+20. Remove all employees working on project-1
+db.myemployee.updatemany({'project.name':'project-1'},{$pull:{project:{name:'project-1'}}})
+
+21. Replace document of employee with name “Deepak to some new document
+db.myemployee.replaceOne({"ename":"Keshav Diwan"},{"empno":123,"ename":"Juhi","sal":50000,"dept":{"deptno":10,"dname":"Production","dloc":"Jalna"},"Desg":"Manager","mgr":{ "name": "Ben","num":456},"project":[{"name":"Project-1","Hrs":8},{"name":"Project-2","Hrs":8}],"hobbies":[{"name":"Reading"},{"name":"Writing"}]});
+
+
+22. Change skill python to python 3.8 for all employees if python is there in the skillset
+db.myemployee.updateMany({skillset:'python3'},{$set:{'skillset.$':"python 3.8"}})
+
+23. Add 2 skills MongoDb and Perl at the end of skillset array for all employees who are
+working at Pune location
+db.myemployee.updateMany({'dept.dloc':'Pune'},{$push:{skillset:{$each:['MongoDb','Pearl']}}})
+
+24. Delete first hobby from hobby array for all employees who are working on project-1
+or project-2
+db.myemployee.updateMany({"project.name":{$in:["project-1","project-2"]}},{$pop:{"hobbies":-1}});
+
+
+25. Delete last hobby from hobbies array for all employees who are working on project
+which is at 2 nd position in projects array for 4 hrs
+db.myemployee.updateMany({"project.1.Hrs": 4 },{ $pop: {"hobbies":1} });
+
+
+26. Add 2 new projects at the end of array for all employees whose skillset contains Perl
+or python
+db.myemployee.updateMany({skillset:{$in:['Pearl',"python 3.8"]}},{$push:{project:{$each:[{"name":"project-4","Hrs":4},{"name":"Project-3","Hrs":4}]}}})
+
+
+
+27. Change hrs to 6 for project-1 for all employees if they working on the project-1 for <
+6 hrs. otherwise keep the existing value.
+
+db.myemployee.updateMany(
+  { "project.name": "project-1", "project.Hrs": { $lt: 6 } },
+  { $set: { "project.$.Hrs": 6 } }
+);
