@@ -1,0 +1,43 @@
+mongod  --dbpath D:\MongoDb
+
+
+
+price:{$gt:200}
+rating:{$gte:3}
+
+ db.movie.find({price:{$gt:200},rating:{$gte:3}},{name:1,rating:1,price:1,_id:0})
+ 
+db.movie.find({price:{$in:[200,250,350]}},{name:1,rating:1,price:1,_id:0})
+  
+db.movie.find({rating:{$gte:3,$lt:7}},{name:1,rating:1,price:1,_id:0})
+
+db.movie.find({rating:null})
+
+db.movie.find({rating:{$in:[null],$exists:true}})
+
+
+rating:{$gt:3}
+price:{$gt:200}
+$or:[{rating:{$gt:3},price:{$gt:200}}]
+db.movie.find({$or:[{rating:{$gt:3},price:{$gt:200}}]})
+
+{actor:{$size:3}}
+db.movie.find({actor:{$size:3}})
+
+db.movie.find({actor:/^[Aa]mitabh/})
+db.movie.find({actor:{$regex:"^[Aa]mitabh"}})
+
+db.movie.find({actor:{$regex:/amitabh/i}})
+
+vidya balan
+db.movie.find({'actor.1':{$regex:/vidya balan/i}})
+
+db.movie.find({rating:{$type:'string'}})
+
+db.movie.insert({name:'Javan',actor:['SRK','Dipika'],rating:'one'})
+
+db.movie.find({rating:{$mod:[2,1]}})
+
+db.movie.find({rating:{$mod:[3,0]}})
+
+db.samplerestaurent.find({'grades.score':11}).count()

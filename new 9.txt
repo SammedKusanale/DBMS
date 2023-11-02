@@ -1,0 +1,55 @@
+db.movie.update({name:/^[Kk]/},{$inc:{rating:2},$set:{ticket_no:100}})
+
+db.movie.updateMany({name:/^[Pp]/},{$mul:{price:1.10}})
+
+db.movie.update({name:/^p/},{})
+
+db.movie.updateMany({name:/^[Pp]/},{$push:{actor:{$each:['pppp','qqqq'],$position:0}}},{multi:true})
+
+db.movie.updateMany({name:/^[Pp]/},{$pop:{actor:1}})
+
+db.movie.updateMany({name:/^[Pp]/},{$pull:{actor:'xxxx'}})
+
+db.movie.updateMany({name:/^[Pp]/},{$pull:{actor:{$in:['pppp','qqqq']}}})
+
+db.student.insertOne({
+  num: 1,
+  name: "John Doe",
+  marks: [80, 90, 85]
+});
+
+db.student.updateMany({name:/^J/},{$inc:{'marks.$[]':2}})
+
+
+db.mystudents.insertMany([
+{
+	"_id":1,
+	"grades": [
+	{"grade" :80, "mean": 75, "std" :6 },
+	{"grade" :85, "mean": 90, "std" :4 },
+	{"grade" :85, "mean": 85, "std" :6 }
+	]
+},
+{
+	"_id":2,
+	"grades": [
+	{"grade" :90, "mean": 75, "std" :6 },
+	{"grade" :87, "mean": 90, "std" :3 },
+	{"grade" :80, "mean": 85, "std" :6 }
+	]
+}
+])
+
+update 1st document in every 
+db.mystudents.update({'grades.std':6},{$inc:{'grades.$.grade':2}},{multi:true})
+
+db.mystudents.update({},{$inc:{'grades.$[elem].grade':2}},{arrayFilters:[{'elem.std':{$gt:4}}]},{multi:true})
+
+db.mystudents.updateMany({},{$inc:{'grades.$[elem].grade':2}},{arrayFilters:[{'elem.std':{$gt:4}}]},{multi:true})
+
+db.myemployee.updateMany({ename:/^Deep/},{$pull:{project:'project-4'}})
+
+db.myemployee.updateMany({'dept.dname':"Admin"},{$set:{'dept.dname':"purchase department"}})
+
+db.myemployee.updateMany({empno:111},{$unset:{department:"purchase department"}})
+
