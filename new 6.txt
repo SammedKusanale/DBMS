@@ -1,0 +1,59 @@
+SELECT orders.order_id, orders.order_date, products.product_name, products.product_price
+FROM orders
+JOIN customers ON orders.customer_id = customers.customer_id
+JOIN products ON orders.product_id = products.product_id
+WHERE customers.customer_id = 123;
+
+select  date_sub(date_sub(curdate(),interval 3 month),interval day(curdate()-1) day);
+
+select date_format(curdate(),'%W %M %Y') date;
+
+create table marks( 
+studid int, 
+courseid int,
+marks int,
+constraint pk primary key(studid,courseid),
+constraint fk_sid foreign key (studid) references student(sid) 
+on delete cascade,
+constraint fk_cid foreign key (courseid) references course(cid));
+
+
+alter table emp add constraint primary key(empno);
+alter table dept add constraint primary key(deptno);
+alter table salgrade add constraint primary key(grade);
+alter table emp add constraint fk_deptno foreign key (deptno) references dept(deptno) on delete cascade on update cascade;
+alter table emp add netsal int default 1000;
+
+create view mgr30
+as 
+select * from amp where deptno=30;
+
+
+CREATE KEYSPACE mykeyspace WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+CREATE INDEX ename_index ON emp (ename);
+
+To create an employee table, with empid, emp_salary as partition key
+And emp_firstname,emp_dob as cluster key
+Create table employee(
+Empid int,
+emp_salary int,
+emp_lastname varchar,
+emp_firstname text,
+emp_dob date ,
+emp_deptno int,
+emp_comm float,
+primary key((empid,emp_salary),emp_firstname,emp_dob)
+);
+
+day 14
+
+You cannot use = operator only on non primary key columns without
+partition key and if you want to use it then add allow filtering
+Select * from employee where emp_comm=345------ error
+Select * from employee where emp_comm=345 ALLOW FILTERING.----right
+
+mongoimport --db mydata --collection movie --file E:\data\movie.json
+
+
+dn.movie.aggregate([{$group:{_id:null,minp:{$min:price},sump:{$sum,price},avgp:{$avg,price},count:{$sum:1}}}])
